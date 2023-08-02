@@ -1,6 +1,6 @@
-# autorun-go
+# autorun go
 
-[![GoDoc](https://godoc.org/github.com/s00d/autorun-go?status.svg)](https://godoc.org/github.com/s00d/autorun-go)
+[![GoDoc](https://godoc.org/github.com/s00d/autorun?status.svg)](https://godoc.org/github.com/s00d/autorun)
 
 A Go library to run a command after login.
 
@@ -11,7 +11,7 @@ package main
 
 import (
 	"log"
-	"github.com/s00d/autorun-go"
+	"github.com/s00d/autorun"
 )
 
 func main() {
