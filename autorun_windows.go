@@ -5,6 +5,7 @@ package autorun
 
 import (
 	"golang.org/x/sys/windows/registry"
+	"strings"
 )
 
 // addToAutoRun добавляет команду в автозапуск в Windows
