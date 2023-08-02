@@ -15,7 +15,7 @@ import (
 )
 
 func main() {
-	autorun := NewAutoRun()
+	autostart := autorun.NewAutoRun()
 
 	if autorun.IsEnabled() {
 		log.Println("App is already enabled, removing it...")

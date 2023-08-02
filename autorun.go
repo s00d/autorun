@@ -22,7 +22,7 @@ func NewAutoRun() *AutoRun {
 	}
 }
 
-// Add добавляет команду в автозапуск
+// Enable добавляет команду в автозапуск
 func (a *AutoRun) Enable() error {
 	switch runtime.GOOS {
 	case "linux":
@@ -36,7 +36,7 @@ func (a *AutoRun) Enable() error {
 	}
 }
 
-// Remove удаляет команду из автозапуска
+// Disable удаляет команду из автозапуска
 func (a *AutoRun) Disable() error {
 	switch runtime.GOOS {
 	case "linux":
