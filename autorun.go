@@ -50,6 +50,7 @@ func (a *AutoRun) Disable() error {
 	}
 }
 
+// IsEnabled првоерить команду
 func (a *AutoRun) IsEnabled() (bool, error) {
 	switch runtime.GOOS {
 	case "linux":

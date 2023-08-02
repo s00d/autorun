@@ -4,26 +4,25 @@
 package autorun
 
 import (
-	"os"
+	"github.com/kardianos/service"
 )
 
 // addToAutoRun добавляет команду в автозапуск в macOS
 func (a *AutoRun) addToAutoRun() error {
-	plistFilePath := a.getPlistFilePath()
-	plistFileContent := a.getPlistFileContent()
+	config := &service.Config{
+		Name:        a.AppName,
+		DisplayName: a.AppName,
+		Executable:  a.Executable,
+	}
 
-	plistFile, err := os.Create(plistFilePath)
+	// Создание новой службы
+	s, err := service.New(nil, config)
 	if err != nil {
 		return err
 	}
-	defer func(plistFile *os.File) {
-		err := plistFile.Close()
-		if err != nil {
 
-		}
-	}(plistFile)
-
-	_, err = plistFile.WriteString(plistFileContent)
+	// Установка службы
+	err = s.Install()
 	if err != nil {
 		return err
 	}
@@ -33,9 +32,20 @@ func (a *AutoRun) addToAutoRun() error {
 
 // removeFromAutoRun удаляет команду из автозапуска в macOS
 func (a *AutoRun) removeFromAutoRun() error {
-	plistFilePath := a.getPlistFilePath()
+	config := &service.Config{
+		Name:        a.AppName,
+		DisplayName: a.AppName,
+		Executable:  a.Executable,
+	}
 
-	err := os.Remove(plistFilePath)
+	// Создание новой службы
+	s, err := service.New(nil, config)
+	if err != nil {
+		return err
+	}
+
+	// Удаление службы
+	err = s.Uninstall()
 	if err != nil {
 		return err
 	}
@@ -43,39 +53,28 @@ func (a *AutoRun) removeFromAutoRun() error {
 	return nil
 }
 
-// getPlistFilePath возвращает путь к файлу .plist в macOS
-func (a *AutoRun) getPlistFilePath() string {
-	return "~/Library/LaunchAgents/" + a.AppName + ".plist"
-}
-
-// getPlistFileContent возвращает содержимое файла .plist в macOS
-func (a *AutoRun) getPlistFileContent() string {
-	return `<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-	<key>Label</key>
-	<string>` + a.AppName + `</string>
-	<key>ProgramArguments</key>
-	<array>
-		<string>` + a.Executable + `</string>
-	</array>
-	<key>RunAtLoad</key>
-	<true/>
-</dict>
-</plist>`
-}
-
+// isAutoEnabled проверяет, включена ли автозагрузка в macOS
 func (a *AutoRun) isAutoEnabled() (bool, error) {
-	plistFilePath := a.getPlistFilePath()
+	config := &service.Config{
+		Name:        a.AppName,
+		DisplayName: a.AppName,
+		Executable:  a.Executable,
+	}
 
-	_, err := os.Stat(plistFilePath)
+	// Создание новой службы
+	s, err := service.New(nil, config)
 	if err != nil {
-		if os.IsNotExist(err) {
+		return false, err
+	}
+
+	// Проверка статуса службы
+	status, err := s.Status()
+	if err != nil {
+		if err == service.ErrNotInstalled {
 			return false, nil
 		}
 		return false, err
 	}
 
-	return true, nil
+	return status == service.StatusRunning, nil
 }
