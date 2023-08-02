@@ -7,8 +7,8 @@ import (
 	"golang.org/x/sys/windows/registry"
 )
 
-// addToAutoStart добавляет команду в автозапуск в Windows
-func (a *AutoStart) addToAutoStart() error {
+// addToAutoRun добавляет команду в автозапуск в Windows
+func (a *AutoRun) addToAutoRun() error {
 	key, err := registry.OpenKey(registry.CURRENT_USER, `SOFTWARE\Microsoft\Windows\CurrentVersion\Run`, registry.ALL_ACCESS)
 	if err != nil {
 		return err
@@ -23,8 +23,8 @@ func (a *AutoStart) addToAutoStart() error {
 	return nil
 }
 
-// removeFromAutoStart удаляет команду из автозапуска в Windows
-func (a *AutoStart) removeFromAutoStart() error {
+// removeFromAutoRun удаляет команду из автозапуска в Windows
+func (a *AutoRun) removeFromAutoRun() error {
 	key, err := registry.OpenKey(registry.CURRENT_USER, `SOFTWARE\Microsoft\Windows\CurrentVersion\Run`, registry.ALL_ACCESS)
 	if err != nil {
 		return err
@@ -39,7 +39,7 @@ func (a *AutoStart) removeFromAutoStart() error {
 	return nil
 }
 
-func (a *AutoStart) isAutoEnabled() (bool, error) {
+func (a *AutoRun) isAutoEnabled() (bool, error) {
 	key, err := registry.OpenKey(registry.CURRENT_USER, `SOFTWARE\Microsoft\Windows\CurrentVersion\Run`, registry.READ)
 	if err != nil {
 		return false, err

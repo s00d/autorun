@@ -7,8 +7,8 @@ import (
 	"os"
 )
 
-// addToAutoStart добавляет команду в автозапуск в macOS
-func (a *AutoStart) addToAutoStart() error {
+// addToAutoRun добавляет команду в автозапуск в macOS
+func (a *AutoRun) addToAutoRun() error {
 	plistFilePath := a.getPlistFilePath()
 	plistFileContent := a.getPlistFileContent()
 
@@ -16,7 +16,12 @@ func (a *AutoStart) addToAutoStart() error {
 	if err != nil {
 		return err
 	}
-	defer plistFile.Close()
+	defer func(plistFile *os.File) {
+		err := plistFile.Close()
+		if err != nil {
+
+		}
+	}(plistFile)
 
 	_, err = plistFile.WriteString(plistFileContent)
 	if err != nil {
@@ -26,8 +31,8 @@ func (a *AutoStart) addToAutoStart() error {
 	return nil
 }
 
-// removeFromAutoStart удаляет команду из автозапуска в macOS
-func (a *AutoStart) removeFromAutoStart() error {
+// removeFromAutoRun удаляет команду из автозапуска в macOS
+func (a *AutoRun) removeFromAutoRun() error {
 	plistFilePath := a.getPlistFilePath()
 
 	err := os.Remove(plistFilePath)
@@ -39,12 +44,12 @@ func (a *AutoStart) removeFromAutoStart() error {
 }
 
 // getPlistFilePath возвращает путь к файлу .plist в macOS
-func (a *AutoStart) getPlistFilePath() string {
+func (a *AutoRun) getPlistFilePath() string {
 	return "~/Library/LaunchAgents/" + a.AppName + ".plist"
 }
 
 // getPlistFileContent возвращает содержимое файла .plist в macOS
-func (a *AutoStart) getPlistFileContent() string {
+func (a *AutoRun) getPlistFileContent() string {
 	return `<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
@@ -61,7 +66,7 @@ func (a *AutoStart) getPlistFileContent() string {
 </plist>`
 }
 
-func (a *AutoStart) isAutoEnabled() (bool, error) {
+func (a *AutoRun) isAutoEnabled() (bool, error) {
 	plistFilePath := a.getPlistFilePath()
 
 	_, err := os.Stat(plistFilePath)

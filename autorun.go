@@ -7,28 +7,28 @@ import (
 	"runtime"
 )
 
-type AutoStart struct {
+type AutoRun struct {
 	AppName    string // Имя приложения
 	Executable string // Путь к исполняемому файлу приложения
 }
 
-func NewAutoStart() *AutoStart {
+func NewAutoRun() *AutoRun {
 	appName := filepath.Base(os.Args[0])
 	executable, _ := os.Executable()
 
-	return &AutoStart{
+	return &AutoRun{
 		AppName:    appName,
 		Executable: executable,
 	}
 }
 
 // Add добавляет команду в автозапуск
-func (a *AutoStart) Enable() error {
+func (a *AutoRun) Enable() error {
 	switch runtime.GOOS {
 	case "linux":
 	case "darwin":
 	case "windows":
-		return a.addToAutoStart()
+		return a.addToAutoRun()
 	default:
 		return errors.New("unsupported operating system")
 	}
@@ -36,19 +36,19 @@ func (a *AutoStart) Enable() error {
 }
 
 // Remove удаляет команду из автозапуска
-func (a *AutoStart) Disable() error {
+func (a *AutoRun) Disable() error {
 	switch runtime.GOOS {
 	case "linux":
 	case "darwin":
 	case "windows":
-		return a.removeFromAutoStart()
+		return a.removeFromAutoRun()
 	default:
 		return errors.New("unsupported operating system")
 	}
 	return errors.New("unsupported operating system")
 }
 
-func (a *AutoStart) IsEnabled() (bool, error) {
+func (a *AutoRun) IsEnabled() (bool, error) {
 	switch runtime.GOOS {
 	case "linux":
 	case "darwin":

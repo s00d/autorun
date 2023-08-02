@@ -7,8 +7,8 @@ import (
 	"os"
 )
 
-// addToAutoStart добавляет команду в автозапуск в Linux
-func (a *AutoStart) addToAutoStart() error {
+// addToAutoRun добавляет команду в автозапуск в Linux
+func (a *AutoRun) addToAutoRun() error {
 	desktopFilePath := a.getDesktopFilePath()
 	desktopFileContent := a.getDesktopFileContent()
 
@@ -26,8 +26,8 @@ func (a *AutoStart) addToAutoStart() error {
 	return nil
 }
 
-// removeFromAutoStart удаляет команду из автозапуска в Linux
-func (a *AutoStart) removeFromAutoStart() error {
+// removeFromAutoRun удаляет команду из автозапуска в Linux
+func (a *AutoRun) removeFromAutoRun() error {
 	desktopFilePath := a.getDesktopFilePath()
 
 	err := os.Remove(desktopFilePath)
@@ -39,12 +39,12 @@ func (a *AutoStart) removeFromAutoStart() error {
 }
 
 // getDesktopFilePath возвращает путь к файлу .desktop в Linux
-func (a *AutoStart) getDesktopFilePath() string {
+func (a *AutoRun) getDesktopFilePath() string {
 	return "~/.config/autostart/" + a.AppName + ".desktop"
 }
 
 // getDesktopFileContent возвращает содержимое файла .desktop в Linux
-func (a *AutoStart) getDesktopFileContent() string {
+func (a *AutoRun) getDesktopFileContent() string {
 	return `[Desktop Entry]
 Type=Application
 Name=` + a.AppName + `
@@ -53,7 +53,7 @@ Hidden=false
 X-GNOME-Autostart-enabled=true`
 }
 
-func (a *AutoStart) isAutoEnabled() (bool, error) {
+func (a *AutoRun) isAutoEnabled() (bool, error) {
 	desktopFilePath := a.getDesktopFilePath()
 
 	_, err := os.Stat(desktopFilePath)
