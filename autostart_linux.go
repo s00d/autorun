@@ -1,7 +1,7 @@
 //go:build linux
 // +build linux
 
-package autostart
+package autorun
 
 import (
 	"os"

@@ -1,7 +1,7 @@
 //go:build windows
 // +build windows
 
-package autostart
+package autorun
 
 import (
 	"golang.org/x/sys/windows/registry"
