@@ -26,36 +26,39 @@ func NewAutoRun() *AutoRun {
 func (a *AutoRun) Enable() error {
 	switch runtime.GOOS {
 	case "linux":
+		return a.addToAutoRun()
 	case "darwin":
+		return a.addToAutoRun()
 	case "windows":
 		return a.addToAutoRun()
 	default:
 		return errors.New("unsupported operating system")
 	}
-	return errors.New("unsupported operating system")
 }
 
 // Remove удаляет команду из автозапуска
 func (a *AutoRun) Disable() error {
 	switch runtime.GOOS {
 	case "linux":
+		return a.removeFromAutoRun()
 	case "darwin":
+		return a.removeFromAutoRun()
 	case "windows":
 		return a.removeFromAutoRun()
 	default:
 		return errors.New("unsupported operating system")
 	}
-	return errors.New("unsupported operating system")
 }
 
 func (a *AutoRun) IsEnabled() (bool, error) {
 	switch runtime.GOOS {
 	case "linux":
+		return a.isAutoEnabled()
 	case "darwin":
+		return a.isAutoEnabled()
 	case "windows":
 		return a.isAutoEnabled()
 	default:
 		return false, errors.New("unsupported operating system")
 	}
-	return false, errors.New("unsupported operating system")
 }
