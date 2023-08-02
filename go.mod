@@ -1,4 +1,4 @@
-module autorun
+module github.com/s00d/autorun
 
 go 1.20
 
